@@ -44,3 +44,16 @@ def build_graph():
     workflow.add_edge("generate", END)
 
     return workflow.compile()
+
+
+graph = build_graph()
+
+
+def ask_question(question: str):
+    result = graph.invoke({
+        "question": question,
+        "context": "",
+        "answer": ""
+    })
+
+    return result["answer"]
