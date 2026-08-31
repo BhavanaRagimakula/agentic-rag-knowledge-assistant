@@ -1,15 +1,20 @@
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+
+from app.config import OPENAI_API_KEY
+
+
+llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0,
+    api_key=OPENAI_API_KEY
+)
 
 
 def generate_answer(question: str, context: str) -> str:
-    prompt = ChatPromptTemplate.from_template(
-        """
-You are a helpful enterprise knowledge assistant.
+    prompt = f"""
+You are a helpful knowledge assistant.
 
-Answer the user's question using ONLY the provided context.
-If the answer cannot be found in the context, say:
-"I could not find this information in the provided documents."
+Answer the user's question using only the provided context.
 
 Context:
 {context}
@@ -17,22 +22,10 @@ Context:
 Question:
 {question}
 
-Answer:
+If the answer is not available in the context, say:
+"I don't have enough information in the provided documents."
 """
-    )
 
-    llm = ChatOpenAI(
-        model="gpt-4o-mini",
-        temperature=0
-    )
-
-    chain = prompt | llm
-
-    response = chain.invoke(
-        {
-            "context": context,
-            "question": question,
-        }
-    )
+    response = llm.invoke(prompt)
 
     return response.content
