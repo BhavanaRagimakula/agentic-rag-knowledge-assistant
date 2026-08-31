@@ -3,6 +3,7 @@ langchain-community
 langchain-openai
 langgraph
 chromadb
+langchain-chroma
 fastapi
 uvicorn
 python-dotenv
